@@ -1,0 +1,63 @@
+text_sensor:
+  - platform: homeassistant
+    name: "Front Door"
+    entity_id: "sensor.front_door_2"
+    attribute: logical_status
+    id: front_door_2
+    on_value:
+    - if:
+        condition:
+          text_sensor.state:
+            id: front_door_2
+            state: 'violated'
+        then:
+          - output.turn_on: fr_dr_led_red_output
+          - output.turn_off: fr_dr_led_green_output
+    - if:
+        condition:
+          text_sensor.state:
+            id: front_door_2
+            state: 'normal'
+        then:
+          - output.turn_on: fr_dr_led_green_output
+          - output.turn_off: fr_dr_led_red_output   
+
+  - platform: homeassistant
+    name: "Arbor Gate"
+    entity_id: "sensor.arbor_gate_2"
+    attribute: logical_status
+    id: arbor_gate_2
+    on_value:
+    - if:
+        condition:
+          text_sensor.state:
+            id: arbor_gate_2
+            state: 'violated'
+        then:
+          - output.turn_on: gate_led_red_output
+          - output.turn_off: gate_led_green_output
+    - if:
+        condition:
+          text_sensor.state:
+            id: arbor_gate_2
+            state: 'normal'
+        then:
+          - output.turn_on: gate_led_green_output
+          - output.turn_off: gate_led_red_output                 
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: fr_dr_led_red_output
+
+  - platform: gpio
+    pin: GPIO13
+    id: fr_dr_led_green_output 
+
+  - platform: gpio
+    pin: GPIO4
+    id: gate_led_red_output
+
+  - platform: gpio
+    pin: GPIO5
+    id: gate_led_green_output    
